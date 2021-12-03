@@ -16,7 +16,7 @@ class Connection
 
     $dbParams = [
       'driver'   => $_ENV['DB_DRIVER'],
-      'host'     => $_ENV['DB_HOST'] . ':' . $_ENV['DB_PORT'],
+      'host'     => $_ENV['DB_HOST'],
       'user'     => $_ENV['DB_USER'],
       'password' => $_ENV['DB_PASSWORD'],
       'dbname'   => $_ENV['DB_NAME'],

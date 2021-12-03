@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Routing\Attributes\Route;
 use DateTime;
 use Doctrine\ORM\EntityManager;
 
 class IndexController extends AbstractController
 {
+    #[Route(path: "/")]
   public function index(EntityManager $em)
   {
     $user = new User();

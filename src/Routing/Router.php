@@ -2,6 +2,7 @@
 
 namespace App\Routing;
 
+use App\Routing\Attributes\Route;
 use Psr\Container\ContainerInterface;
 use ReflectionClass;
 use ReflectionMethod;
@@ -103,7 +104,6 @@ class Router
   {
     $methodInfos = new ReflectionMethod($controller . '::' . $method);
     $methodParameters = $methodInfos->getParameters();
-
     $params = [];
 
     foreach ($methodParameters as $param) {
@@ -116,5 +116,40 @@ class Router
     }
 
     return $params;
+  }
+
+    /**
+     * @throws \ReflectionException
+     */
+    public function registerRoutes(): void
+  {
+      $files = array_slice(scandir(__DIR__ . '/../Controller') , 2);
+      $controllersNameSpace = "App\\Controller\\";
+
+      foreach ($files as $file) {
+          $fqcn = $controllersNameSpace . pathinfo($file, PATHINFO_FILENAME);
+          $reflection = new ReflectionClass($fqcn);
+
+          $methods = $reflection->getMethods(ReflectionMethod::IS_PUBLIC);
+
+          foreach ($methods as $method) {
+              $attributes = $method->getAttributes(Route::class);
+
+              foreach ($attributes as $attribute) {
+                  /** @var Route */
+                  $route = $attribute->newInstance();
+
+                  $this->addRoute(
+                      $route->getName(),
+                      $route->getPath(),
+                      $route->getHttpMethods(),
+                      $fqcn,
+                      $method->getName()
+                  );
+              }
+          }
+      }
+
+
   }
 }
