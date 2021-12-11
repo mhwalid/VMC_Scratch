@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Api\Attributes\Api;
 use Doctrine\ORM\Mapping as ORM;
 use DateTime;
 
@@ -9,6 +10,7 @@ use DateTime;
  * @ORM\Entity
  * @ORM\Table(name="users")
  */
+#[Api(path : 'api/user')]
 class User
 {
   /**

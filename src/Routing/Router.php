@@ -138,7 +138,6 @@ class Router
               foreach ($attributes as $attribute) {
                   /** @var Route */
                   $route = $attribute->newInstance();
-
                   $this->addRoute(
                       $route->getName(),
                       $route->getPath(),

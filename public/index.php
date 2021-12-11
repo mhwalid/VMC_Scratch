@@ -1,7 +1,6 @@
 <?php
 
-// Inclut l'autoloader généré par Composer
-require_once __DIR__ . "/../vendor/autoload.php";
+namespace App\Controller;
 
 if (
   php_sapi_name() !== 'cli' &&
@@ -10,6 +9,7 @@ if (
   return false;
 }
 
+use App\Api\ApiGenerator;
 use App\Config\Connection;
 use App\Config\TwigEnvironment;
 use App\Controller\IndexController;
@@ -41,6 +41,17 @@ $container->set(Environment::class, $twig);
 // Routage
 $router = new Router($container);
 $router->registerRoutes();
+
+// Api
+$api = new ApiGenerator();
+$api->generateApi();
+
+$controller = new PersonController($dbConnection, $requestMethod, $userId);
+$controller->processRequest();
+
+if (php_sapi_name() === 'cli') {
+    return;
+}
 
 $requestUri = $_SERVER['REQUEST_URI'];
 $requestMethod = $_SERVER['REQUEST_METHOD'];
